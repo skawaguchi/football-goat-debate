@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The GOAT Ledger — Six Players, Two Lenses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A130F; --ink-2:#0E1B15; --surface:#11241C; --surface-2:#163025;
+    --line:#22463790; --line-solid:#224637; --grass:#2E5C48;
+    --text:#ECF3EF; --muted:#8AA396; --faint:#5E7669;
+    --gold:#E8B24C; --gold-dim:#B7863099;
+    --disp:"Saira Condensed","Arial Narrow",sans-serif;
+    --body:"Inter",system-ui,-apple-system,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,#0C1712 0%,var(--ink) 60%),
+      repeating-linear-gradient(90deg,#0000 0 46px,#ffffff05 46px 92px);
+    color:var(--text);font-family:var(--body);line-height:1.55;letter-spacing:.005em;
+  }
+  .wrap{max-width:1220px;margin:0 auto;padding:0 20px 80px;}
+
+  header.masthead{padding:56px 0 30px;border-bottom:1px solid var(--line);position:relative;}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0 0 14px;}
+  h1{font-family:var(--disp);font-weight:700;font-size:clamp(44px,9vw,92px);line-height:.92;letter-spacing:.01em;text-transform:uppercase;margin:0 0 18px;}
+  h1 .thin{color:var(--muted);font-weight:500;}
+  .lede{max-width:62ch;color:var(--muted);font-size:16px;margin:0 0 22px;}
+  .lede b{color:var(--text);font-weight:600;}
+  .stamp{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--faint);text-transform:uppercase;}
+  .stamp::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px #E8B24C22;}
+
+  section{margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:6px;}
+  .sec-num{font-family:var(--mono);color:var(--gold);font-size:13px;font-weight:600;letter-spacing:.1em;}
+  h2{font-family:var(--disp);font-weight:600;text-transform:uppercase;font-size:clamp(24px,4.5vw,36px);letter-spacing:.02em;margin:0;line-height:1;}
+  .sec-sub{color:var(--muted);font-size:14px;margin:8px 0 20px;max-width:74ch;}
+
+  /* ============ RESPONSIVE STAT TABLE ============ */
+  /* Wide screens: normal table. Narrow screens: each row becomes a stacked card,
+     each cell becomes a label/value line using the data-label attribute. */
+
+  .table-wrap{border:1px solid var(--line-solid);border-radius:12px;background:var(--ink-2);overflow:visible;}
+  table{border-collapse:separate;border-spacing:0;width:100%;}
+  caption{height:0;overflow:hidden;opacity:0;}
+  thead th{
+    font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.05em;
+    text-transform:uppercase;color:var(--muted);text-align:right;padding:13px 12px;
+    background:var(--surface);border-bottom:1px solid var(--line-solid);
+  }
+  thead th.name{text-align:left;}
+  tbody td{
+    padding:14px 12px;font-size:14px;text-align:right;border-bottom:1px solid var(--line);
+    color:var(--text);font-family:var(--mono);font-variant-numeric:tabular-nums;vertical-align:top;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover td{background:#ffffff06;}
+  td.notes{font-family:var(--body);text-align:left;color:var(--muted);font-size:13px;}
+  td.cont{font-family:var(--body);text-align:left;font-size:13px;}
+  td.name{text-align:left;border-right:1px solid var(--line-solid);}
+  .player{display:flex;align-items:center;gap:10px;font-family:var(--body);}
+  .player .flag{font-size:17px;line-height:1;}
+  .player .pname{font-family:var(--disp);font-weight:600;font-size:18px;letter-spacing:.01em;text-transform:uppercase;color:var(--text);}
+  .wc-year{display:block;font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.03em;margin-top:2px;}
+  .trophy{color:var(--gold);}
+  .lead{color:var(--gold);font-weight:600;}
+  .na{color:var(--faint);}
+  .dagger{color:var(--gold);font-family:var(--body);font-size:11px;vertical-align:super;margin-left:1px;}
+
+  /* Breakpoint: table -> stacked cards, no horizontal scroll anywhere */
+  @media (max-width:860px){
+    thead{display:none;}
+    table, tbody, tr, td{display:block;width:100%;}
+    tbody tr{
+      padding:16px 16px 6px;border-bottom:1px solid var(--line-solid);
+    }
+    tbody tr:last-child{border-bottom:none;}
+    td{
+      text-align:left !important;border:none !important;padding:7px 0;
+      display:flex;justify-content:space-between;gap:14px;
+    }
+    td.name{
+      padding:0 0 12px;display:block;
+    }
+    td:not(.name)::before{
+      content:attr(data-label);
+      font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--muted);flex:0 0 auto;padding-top:1px;
+    }
+    td:not(.name){
+      font-size:14px;
+    }
+    td.notes, td.cont{ text-align:left !important; }
+    td.notes::before, td.cont::before{ min-width:96px; }
+  }
+
+  .legend{display:grid;gap:8px;margin:18px 0 0;padding:0;list-style:none;font-size:13px;color:var(--muted);}
+  .legend li{display:flex;gap:10px;align-items:flex-start;}
+  .legend .k{font-family:var(--mono);color:var(--gold);font-size:12px;min-width:24px;}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:14px;margin-top:20px;}
+  .card{background:var(--surface);border:1px solid var(--line-solid);border-left:3px solid var(--gold);border-radius:10px;padding:16px 16px 15px;}
+  .card .label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 7px;}
+  .card .winner{font-family:var(--disp);font-weight:600;font-size:22px;text-transform:uppercase;letter-spacing:.01em;margin:0 0 5px;color:var(--gold);line-height:1;}
+  .card p{margin:0;font-size:13px;color:var(--muted);}
+
+  .accuracy{margin-top:56px;padding:22px 22px 24px;border:1px solid var(--line-solid);border-radius:12px;background:var(--ink-2);}
+  .accuracy h3{font-family:var(--disp);text-transform:uppercase;font-size:18px;letter-spacing:.03em;margin:0 0 12px;color:var(--text);}
+  .accuracy ul{margin:0;padding-left:18px;color:var(--muted);font-size:13px;}
+  .accuracy li{margin:6px 0;}
+  footer.credit{margin-top:34px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--faint);text-transform:uppercase;text-align:center;}
+
+  a{color:var(--gold);}
+  ::selection{background:#E8B24C33;}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:3px;}
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Career greatness vs teenage potential</p>
+    <h1>The GOAT<br><span class="thin">Ledger</span></h1>
+    <p class="lede"><b>Spain won the 2026 World Cup on 19 July, beating Argentina 1&#8209;0.</b> Totals below reflect that result. Six players read two ways: the full body of work, and everything achieved by age nineteen &mdash; Lamine Yamal's age today.</p>
+    <span class="stamp">Current to 20 July 2026</span>
+  </header>
+
+  <!-- ============ TABLE 1 ============ -->
+  <section aria-labelledby="career-h">
+    <div class="sec-head"><span class="sec-num">01</span><h2 id="career-h">Full Career</h2></div>
+    <p class="sec-sub">Totals for active players are current to July 2026 and rise with every match. Assist records did not exist in Pel&eacute; and Maradona's era, shown as N/A.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Full career comparison of six players</caption>
+        <thead>
+          <tr>
+            <th class="name" scope="col">Player</th>
+            <th scope="col">Age</th>
+            <th scope="col">Pro Career</th>
+            <th scope="col">Apps</th>
+            <th scope="col">Goals</th>
+            <th scope="col">G / Game</th>
+            <th scope="col">Assists</th>
+            <th scope="col">G+A / Game</th>
+            <th scope="col">League</th>
+            <th scope="col">UCL</th>
+            <th scope="col">World Cup</th>
+            <th scope="col">Continental</th>
+            <th scope="col">Golden Boots</th>
+            <th scope="col">Ballon d'Or</th>
+            <th scope="col">Signature</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇦🇷</span><span class="pname">Messi</span></span></td>
+            <td data-label="Age">39</td>
+            <td data-label="Pro Career">22<span class="wc-year">2004&ndash;now</span></td>
+            <td data-label="Apps">~1,170</td>
+            <td data-label="Goals">919</td>
+            <td data-label="G / Game">0.79</td>
+            <td data-label="Assists" class="lead">457</td>
+            <td data-label="G+A / Game">1.18</td>
+            <td data-label="League">13</td>
+            <td data-label="UCL">4</td>
+            <td data-label="World Cup" class="trophy">1<span class="wc-year">2022</span></td>
+            <td data-label="Continental" class="cont">Copa Am&eacute;rica &times;2, Olympic Gold</td>
+            <td data-label="Golden Boots">Golden Shoe &times;6</td>
+            <td data-label="Ballon d'Or" class="lead">8</td>
+            <td data-label="Signature" class="notes">Most assists in football history. 2026 World Cup runner-up.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇵🇹</span><span class="pname">Ronaldo</span></span></td>
+            <td data-label="Age">41</td>
+            <td data-label="Pro Career">24<span class="wc-year">2002&ndash;now</span></td>
+            <td data-label="Apps">~1,325</td>
+            <td data-label="Goals" class="lead">974</td>
+            <td data-label="G / Game">0.73</td>
+            <td data-label="Assists">~290<span class="dagger">&sect;</span></td>
+            <td data-label="G+A / Game">~0.95</td>
+            <td data-label="League">7</td>
+            <td data-label="UCL" class="lead">5</td>
+            <td data-label="World Cup" class="na">0<span class="wc-year">&mdash;</span></td>
+            <td data-label="Continental" class="cont">Euro &times;1, Nations League &times;2</td>
+            <td data-label="Golden Boots">Golden Shoe &times;4</td>
+            <td data-label="Ballon d'Or">5</td>
+            <td data-label="Signature" class="notes">146 international goals, a men's record. UCL all-time top scorer.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇧🇷</span><span class="pname">Pel&eacute;</span></span></td>
+            <td data-label="Age">82<span class="dagger">&dagger;</span></td>
+            <td data-label="Pro Career">21<span class="wc-year">1956&ndash;77</span></td>
+            <td data-label="Apps">800+</td>
+            <td data-label="Goals">757<span class="dagger">*</span></td>
+            <td data-label="G / Game" class="lead">0.93</td>
+            <td data-label="Assists" class="na">N/A</td>
+            <td data-label="G+A / Game" class="na">N/A</td>
+            <td data-label="League">6</td>
+            <td data-label="UCL" class="na">&mdash;</td>
+            <td data-label="World Cup" class="trophy">3<span class="wc-year">1958&middot;62&middot;70</span></td>
+            <td data-label="Continental" class="cont">Copa Libertadores &times;2</td>
+            <td data-label="Golden Boots" class="na">N/A</td>
+            <td data-label="Ballon d'Or" class="na">0<span class="dagger">**</span></td>
+            <td data-label="Signature" class="notes">Only man with three World Cups. Champion at 17.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇦🇷</span><span class="pname">Maradona</span></span></td>
+            <td data-label="Age">60<span class="dagger">&dagger;</span></td>
+            <td data-label="Pro Career">21<span class="wc-year">1976&ndash;97</span></td>
+            <td data-label="Apps">680</td>
+            <td data-label="Goals">345</td>
+            <td data-label="G / Game">0.51</td>
+            <td data-label="Assists" class="na">N/A</td>
+            <td data-label="G+A / Game" class="na">N/A</td>
+            <td data-label="League">2</td>
+            <td data-label="UCL" class="na">0</td>
+            <td data-label="World Cup" class="trophy">1<span class="wc-year">1986</span></td>
+            <td data-label="Continental" class="cont na">&mdash;</td>
+            <td data-label="Golden Boots" class="na">N/A</td>
+            <td data-label="Ballon d'Or" class="na">0<span class="dagger">**</span></td>
+            <td data-label="Signature" class="notes">1986 World Cup Golden Ball. Napoli icon.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇫🇷</span><span class="pname">Mbapp&eacute;</span></span></td>
+            <td data-label="Age">27</td>
+            <td data-label="Pro Career">11<span class="wc-year">2015&ndash;now</span></td>
+            <td data-label="Apps">~585</td>
+            <td data-label="Goals">~440</td>
+            <td data-label="G / Game">0.75</td>
+            <td data-label="Assists">~180</td>
+            <td data-label="G+A / Game">1.06</td>
+            <td data-label="League">7</td>
+            <td data-label="UCL" class="na">0</td>
+            <td data-label="World Cup" class="trophy">1<span class="wc-year">2018</span></td>
+            <td data-label="Continental" class="cont">Nations League &times;1</td>
+            <td data-label="Golden Boots">WC Golden Boot 2022</td>
+            <td data-label="Ballon d'Or" class="na">0</td>
+            <td data-label="Signature" class="notes">All-time World Cup top scorer with 22 goals.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇪🇸</span><span class="pname">Yamal</span></span></td>
+            <td data-label="Age">19</td>
+            <td data-label="Pro Career">3<span class="wc-year">2023&ndash;now</span></td>
+            <td data-label="Apps">~190</td>
+            <td data-label="Goals">~62</td>
+            <td data-label="G / Game">0.33</td>
+            <td data-label="Assists">~50</td>
+            <td data-label="G+A / Game">0.59</td>
+            <td data-label="League">3</td>
+            <td data-label="UCL" class="na">0</td>
+            <td data-label="World Cup" class="trophy">1<span class="wc-year">2026</span></td>
+            <td data-label="Continental" class="cont">Euro 2024</td>
+            <td data-label="Golden Boots" class="na">0</td>
+            <td data-label="Ballon d'Or" class="na">0</td>
+            <td data-label="Signature" class="notes">Youngest scorer in Euros history. World Cup winner at 19.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="legend">
+      <li><span class="k">&sect;</span><span>Ronaldo's assist total varies by database, from roughly 261 to 307 depending on how an assist is defined. ~290 is a mid-range figure.</span></li>
+      <li><span class="k">&dagger;</span><span>Age at passing. Pel&eacute; died in 2022, Maradona in 2020.</span></li>
+      <li><span class="k">*</span><span>Pel&eacute;'s goal total varies by source. 757 counts official competitive matches. Tallies above 1,000 include friendlies and tour games.</span></li>
+      <li><span class="k">**</span><span>The Ballon d'Or was European-players-only during Pel&eacute; and Maradona's primes, which excluded them by rule.</span></li>
+    </ul>
+  </section>
+
+  <!-- ============ TABLE 2 ============ -->
+  <section aria-labelledby="age-h">
+    <div class="sec-head"><span class="sec-num">02</span><h2 id="age-h">At Age Nineteen</h2></div>
+    <p class="sec-sub">Every player measured against Yamal's age today. Since a mid-year birthday gives no clean cutoff, these are close approximations for the historical players, and firm totals for Yamal, whose 19th year is happening right now. Mbapp&eacute; also clears this bar: he won the 2018 World Cup six months after turning 19.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Comparison of output and honours by age nineteen</caption>
+        <thead>
+          <tr>
+            <th class="name" scope="col">Player</th>
+            <th scope="col">Apps</th>
+            <th scope="col">Goals</th>
+            <th scope="col">Assists</th>
+            <th scope="col">G / Game</th>
+            <th scope="col">Honours &amp; Records</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇪🇸</span><span class="pname">Yamal</span></span></td>
+            <td data-label="Apps">~190</td>
+            <td data-label="Goals">~62</td>
+            <td data-label="Assists">~50</td>
+            <td data-label="G / Game">0.33</td>
+            <td data-label="Honours" class="notes"><span class="trophy">🏆🏆</span> Euro 2024 winner at 17 and 2026 World Cup winner at 19. Three La Liga titles.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇧🇷</span><span class="pname">Pel&eacute;</span></span></td>
+            <td data-label="Apps">~130</td>
+            <td data-label="Goals">~110</td>
+            <td data-label="Assists" class="na">N/A</td>
+            <td data-label="G / Game">~0.85</td>
+            <td data-label="Honours" class="notes"><span class="trophy">🏆</span> Already a 1958 World Cup winner at 17. Santos and Brazilian league champion.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇫🇷</span><span class="pname">Mbapp&eacute;</span></span></td>
+            <td data-label="Apps">~110</td>
+            <td data-label="Goals">~45</td>
+            <td data-label="Assists">~20</td>
+            <td data-label="G / Game">~0.41</td>
+            <td data-label="Honours" class="notes"><span class="trophy">🏆</span> 2018 World Cup winner, six months after turning 19. Ligue 1 champion, UCL semi-final with Monaco.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇦🇷</span><span class="pname">Maradona</span></span></td>
+            <td data-label="Apps">~140</td>
+            <td data-label="Goals">~60</td>
+            <td data-label="Assists" class="na">N/A</td>
+            <td data-label="G / Game">~0.43</td>
+            <td data-label="Honours" class="notes">Argentina's reigning young star, already the league's most feared attacker.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇦🇷</span><span class="pname">Messi</span></span></td>
+            <td data-label="Apps">~60</td>
+            <td data-label="Goals">~20</td>
+            <td data-label="Assists">~9</td>
+            <td data-label="G / Game">~0.33</td>
+            <td data-label="Honours" class="notes">Established Barcelona attacker. Part of the 2006 Champions League-winning squad, though injured for the final.</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Player"><span class="player"><span class="flag">🇵🇹</span><span class="pname">Ronaldo</span></span></td>
+            <td data-label="Apps">~62</td>
+            <td data-label="Goals">~9</td>
+            <td data-label="Assists">~6</td>
+            <td data-label="G / Game">~0.15</td>
+            <td data-label="Honours" class="notes">One season into Manchester United after leaving Sporting CP. FA Cup winner in his first United season.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ TAKEAWAYS ============ -->
+  <section aria-labelledby="take-h">
+    <div class="sec-head"><span class="sec-num">03</span><h2 id="take-h">The Verdicts</h2></div>
+    <p class="sec-sub">Splitting the two questions on purpose. Teenage ceiling and career body of work are different competitions.</p>
+    <div class="cards">
+      <div class="card"><p class="label">Best at age 19</p><p class="winner">Pel&eacute;</p><p>World Cup winner and tournament star at 17, still building at 19. Yamal is the closest modern comparison, with two major trophies by the same age.</p></div>
+      <div class="card"><p class="label">Best complete career</p><p class="winner">Messi</p><p>Goals, assists, trophies, and individual awards together.</p></div>
+      <div class="card"><p class="label">Best pure scorer</p><p class="winner">Ronaldo</p><p>974 goals, driven by volume and longevity.</p></div>
+      <div class="card"><p class="label">Best scoring rate</p><p class="winner">Pel&eacute;</p><p>0.93 goals per game across his career.</p></div>
+      <div class="card"><p class="label">Best Champions League</p><p class="winner">Ronaldo</p><p>Five titles and the all-time scoring record.</p></div>
+      <div class="card"><p class="label">Best World Cup impact</p><p class="winner">Pel&eacute; &amp; Maradona</p><p>Three titles and a one-man 1986. Mbapp&eacute; now holds the all-time scoring record at 22.</p></div>
+      <div class="card"><p class="label">Most impressive unfinished</p><p class="winner">Mbapp&eacute; &amp; Yamal</p><p>Two careers still being written, both already historic.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ ACCURACY ============ -->
+  <div class="accuracy">
+    <h3>On the numbers</h3>
+    <ul>
+      <li>Career goals and assists for Messi (919 / 457), Ronaldo (974 / ~290), Mbapp&eacute; (~440 / ~180), and Yamal (~62 / ~50) are cross-referenced against multiple trackers as of July 2026.</li>
+      <li>Appearance counts for active players vary slightly between databases and climb weekly, so they are shown as rounded figures.</li>
+      <li>Age-19 figures for Pel&eacute;, Maradona, Messi, and Ronaldo are approximations. A mid-year birthday gives no clean cutoff, and older sources slice teenage seasons differently. Yamal's numbers, and Mbapp&eacute;'s World Cup credit, are firm.</li>
+      <li>Pel&eacute; and Maradona predate consistent assist tracking, shown as N/A rather than a guess.</li>
+      <li>"Golden Boot" covers major scoring awards: the European Golden Shoe and the World Cup Golden Boot.</li>
+      <li>Current-event facts (2026 World Cup result, Ballon d'Or counts, Mbapp&eacute;'s World Cup scoring record) were checked against reporting from 19 to 20 July 2026.</li>
+    </ul>
+  </div>
+
+  <footer class="credit">The GOAT Ledger &middot; Compiled 20 July 2026</footer>
+
+</div>
+</body>
+</html>
