@@ -4,6 +4,7 @@ This document catalogs the data sources used to build the GOAT Ledger comparison
 It is intended as a living reference for the dataset and a starting point for future migration into structured data.
 
 ## Document metadata
+
 - Compiled: 20 July 2026
 - Page: `goat-comparison.html`
 - Repo: `football-goat-debate`
